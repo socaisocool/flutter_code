@@ -96,4 +96,7 @@ class _LoginPagePageState extends State<LoginPage> {
       print(e);
     }
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

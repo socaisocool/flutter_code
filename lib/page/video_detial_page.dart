@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_code/model/video_model.dart';
+import 'package:flutter_code/model/home_mo.dart';
 
 class VideoDetialPage extends StatefulWidget {
-  final VideoModel? videoModel;
+  final VideoMo? videoModel;
 
   const VideoDetialPage({Key? key, this.videoModel}) : super(key: key);
 
@@ -16,7 +16,7 @@ class _VideoDetialPageState extends State<VideoDetialPage> {
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
-        child: Text('视频详情页,vid:${widget.videoModel?.vid}'),
+        child: Text('视频详情页,vid:${widget.videoModel?.vid ?? ""}'),
       ),
     );
   }

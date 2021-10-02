@@ -1,9 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.test.flutter_code">
 
 <!--    <uses-permission android:name="android.permission.INTERNET" />-->
     <application
         android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="28"
         android:label="flutter_code">
         <activity
             android:name=".MainActivity"

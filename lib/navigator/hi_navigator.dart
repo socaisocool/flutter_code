@@ -1,5 +1,3 @@
-// ignore_for_file: unnecessary_null_comparison
-
 import 'package:flutter/material.dart';
 import 'package:flutter_code/page/login_page.dart';
 import 'package:flutter_code/page/registration_page.dart';
@@ -70,7 +68,7 @@ class HiNavigator extends _RouteJumpListener {
   RouteJumpLinstener? _routeJump;
 
   @override
-  void onJumpTo(RouteStatus routeStatus, {Map? args}) {
+  void onJumpTo(RouteStatus routeStatus, {Map args = const {}}) {
     _routeJump?.onJumpTo(routeStatus, args: args);
   }
 
@@ -126,7 +124,7 @@ abstract class _RouteJumpListener {
   void onJumpTo(RouteStatus routeStatus, {Map args});
 }
 
-typedef OnJumpTo = void Function(RouteStatus routeStatus, {Map? args});
+typedef OnJumpTo = void Function(RouteStatus routeStatus, {Map args});
 
 ///定义路由跳转逻辑要实现的功能
 class RouteJumpLinstener {

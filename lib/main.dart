@@ -1,8 +1,6 @@
-// ignore_for_file: unnecessary_null_comparison
-
 import 'package:flutter/material.dart';
 import 'package:flutter_code/http/dao/login_dao.dart';
-import 'package:flutter_code/model/video_model.dart';
+import 'package:flutter_code/model/home_mo.dart';
 import 'package:flutter_code/page/registration_page.dart';
 import 'package:flutter_code/page/video_detial_page.dart';
 import 'package:flutter_code/test/test_json.dart';
@@ -65,15 +63,15 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<BiliRoutePath> {
   //与路由有关的状态
   List<MaterialPage> pages = [];
-  VideoModel? showVideoModel;
+  VideoMo? showVideoModel;
   BiliRoutePath? path;
 
   BiliRouteDelegate() {
     HiNavigator.getObj()
-        .registerRouteJump(RouteJumpLinstener((routeStatus, {args}) {
+        .registerRouteJump(RouteJumpLinstener((routeStatus, {Map? args}) {
       _routeStatus = routeStatus;
-      if (routeStatus == RouteStatus.detial) {
-        showVideoModel = args?['videoMo'];
+      if (routeStatus == RouteStatus.detial && args != null) {
+        showVideoModel = args['videoMo'];
       }
       notifyListeners();
     }));
@@ -95,7 +93,7 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
     if (routeStatus == RouteStatus.home) {
       //跳转首页时，pages之中只能保留HomePage，其他都要清除
       pages.clear();
-      page = pageWrap(BottomNavigator());
+      page = pageWrap(const BottomNavigator());
     } else if (routeStatus == RouteStatus.detial) {
       page = pageWrap(VideoDetialPage(videoModel: showVideoModel));
     } else if (routeStatus == RouteStatus.login) {
@@ -161,7 +159,8 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
   }
 
   //路由当前状态
-  RouteStatus _routeStatus = RouteStatus.login;
+  RouteStatus _routeStatus =
+      LoginDao.getBoardingPass() != null ? RouteStatus.home : RouteStatus.login;
   RouteStatus get routeStatus {
     if (_routeStatus != RouteStatus.registration && !hasLogin) {
       return _routeStatus = RouteStatus.login;

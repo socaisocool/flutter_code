@@ -25,6 +25,10 @@ abstract class BaseRequest {
   String url() {
     Uri uri;
     var pathStr = path();
+    if (needLogin()) {
+      print("登录令牌:${LoginDao.getBoardingPass() ?? "未找到登录令牌s"}");
+      addHeader(LoginDao.BOARDING_PASS, LoginDao.getBoardingPass() ?? "");
+    }
     if (pathParams != null) {
       if (path().endsWith("/")) {
         pathStr = "${path()}$pathParams";
@@ -37,9 +41,7 @@ abstract class BaseRequest {
     } else {
       uri = Uri.http(authority(), pathStr, params);
     }
-    if (needLogin()) {
-      addHeader(LoginDao.BOARDING_PASS, LoginDao.getBoardingPass() ?? "");
-    }
+
     String urlStr = uri.toString();
     print('url:$urlStr');
     return urlStr;
