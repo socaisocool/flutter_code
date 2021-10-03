@@ -5,7 +5,6 @@ import 'package:flutter_code/page/registration_page.dart';
 import 'package:flutter_code/page/video_detial_page.dart';
 import 'package:flutter_code/test/test_json.dart';
 import 'package:flutter_code/utils/toast_util.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'db/hi_cache.dart';
 import 'navigator/bottom_navigator.dart';
@@ -96,8 +95,8 @@ class BiliRouteDelegate extends RouterDelegate<BiliRoutePath>
       pages.clear();
       page = pageWrap(const BottomNavigator());
     } else if (routeStatus == RouteStatus.detial) {
-      launch(showVideoModel!.url);
-      page = pageWrap(VideoDetialPage(videoModel: showVideoModel));
+      // launch(showVideoModel!.url);//跳转外部浏览器
+      page = pageWrap(VideoDetialPage(videoModel: showVideoModel!));
     } else if (routeStatus == RouteStatus.login) {
       page = pageWrap(LoginPage(
           onJumpToRegister: () =>

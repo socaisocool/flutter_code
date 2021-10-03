@@ -80,6 +80,48 @@ Bad state:Insecure Http is not allow by platform: http://~
     也就是DartBean每个字段都是声明为非空类型，实际解析过程，这些字段是可能为null的，如果为null，要么修改DartBean本身的可空字段的类型
     要么初始化时传一个默认的非空值。
 
-7、视频中的flutter_statusbar_manager: ^2.0.0 是非空安全的插件，直接把源代码放进项目里，让它支持空安全
+7、
+视频中的flutter_statusbar_manager: ^2.0.0 是非空安全的插件，直接把源代码放进项目里，让它支持空类型
+
+第七章：
+1、自定义视频播放器UI的源码，fa_pub中的hi_video_controll文件中的MaterialControls是支持空安全类型的而电子书中的那个源码是不支持空安全类型的
+
+2、对chewie在android平台下关于界面控制样式的定制
+https://github.com/brianegan/chewie/tree/master/lib/src这个是chewie库目录下的源代码，这个路径下，可以看到文件夹cupertine/material
+这两个文件夹分别是对于iOS/android的样式适配，cupertinoControll/MaterialControls分别是决定ios/android界面控制样式的类,
+我们直接把对应平台的代码拷贝到项目中根据需求改动，在本项目中hi_video_controlls中的MaterialControls就是自己定制的android界面样式
+
+ChewieController中有一个参数customControls是用来决定界面控制的样式的，我们自定义的"MaterialControls"类就是通过这个参数传递给chewie
+
+import 'package:chewie/chewie.dart' hide MaterialControls;
+import 'hi_video_controls.dart';
+
+3、"hide"关键字的使用
+import 'package:chewie' 导入这个包是为了使用Chewie这个组件，这个包中默认也包括了针对于android与ios的界面控制样式类：
+cupertineControls/MaterialControls,我们项目是直接拷贝Chewie中的MaterialControls来修改，所以在当前文件中MaterialControls默认是会
+引用chewie中默认未改动的MaterialControls类，如果要使用自己定制的同名类，可以先用关键字"hide"隐藏chewie库中的MaterialControls，
+这样编译器就会让我们自己去关联对应的位置的MaterialControls类
+
+4、android中chewie在未开启视频时点击全屏会报
+I/flutter (17282): _onExpandCollapse:videoPlayerController.value.size is null.
+视频里的版本是
+chewie: ^1.2.0
+video_player: ^2.1.4
+我这里不管用哪个版本都是输出上面的错误，而不是视频中的崩溃信息，
+hi_video_contrils中的_onExpandCollapse方法的#1是修复代码-》为了兼容ios
+
+
+5、全屏->非全屏  越界异常使用以下的插件   为了兼容ios
+ orientation: ^1.2.0
+
+ 这个插件是可以强制把屏幕显示模式修改为横屏或者竖屏，视频处于全屏模式时宽高是颠倒的，如果此时的屏幕显示模式不变就出现越界异常。
+ 比如1280x720的屏幕在横屏模式，宽是720高是1280，你让视频显示全屏，也就是宽是1280高是720，此时屏幕模式没有修改，那么1280>720就出现了界面异常
+ 此时只要通过orientation这个插件把屏幕的显示模式修改一下，就不会有越界问题了
+
+6、监听APP是否处于后台状态的监听可以使用WidgetsBindingObserver&widgetsBinding.instance.addObserver
+
+FractionallySizedBox、MediaQuery、
+
+
 
 

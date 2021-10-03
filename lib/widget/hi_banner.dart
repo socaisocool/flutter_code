@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_code/model/home_mo.dart';
-import 'package:flutter_code/widget/cache_image.dart';
+import 'package:flutter_code/utils/view_util.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 
 class HiBanner extends StatelessWidget {

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_code/model/home_mo.dart';
 import 'package:flutter_code/navigator/hi_navigator.dart';
 import 'package:flutter_code/utils/format_util.dart';
-import 'package:flutter_code/widget/cache_image.dart';
+import 'package:flutter_code/utils/view_util.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class VideoCard extends StatelessWidget {

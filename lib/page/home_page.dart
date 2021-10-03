@@ -5,10 +5,10 @@ import 'package:flutter_code/http/dao/home_dao.dart';
 import 'package:flutter_code/model/home_mo.dart';
 import 'package:flutter_code/navigator/hi_navigator.dart';
 import 'package:flutter_code/page/home_top_tab_page.dart';
-import 'package:flutter_code/utils/color.dart';
+import 'package:flutter_code/page/video_detial_page.dart';
 import 'package:flutter_code/utils/toast_util.dart';
+import 'package:flutter_code/widget/hi_tab.dart';
 import 'package:flutter_code/widget/navigation_bar.dart';
-import 'package:underline_indicator/underline_indicator.dart';
 
 class HomePage extends StatefulWidget {
   final ValueChanged<int>? jumpTabTo;
@@ -26,10 +26,14 @@ class HomePage extends StatefulWidget {
 ///initState中添加的路由跳转监听无法感知路由跳转的变化信息，HomePage的state加上AutomaticKeepAliveClientMixin后
 ///重新创建的HomePage的State是仍然是旧Home的state，so就可以感知到理由跳转的变化
 class _HomePageState extends HiState<HomePage>
-    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+    with
+        AutomaticKeepAliveClientMixin,
+        TickerProviderStateMixin,
+        WidgetsBindingObserver {
   var listener;
   // var tabs = ["推荐", "热门", "追播", "影视", "搞笑", "日常", "综合", "手机游戏", "短片-手书-配音"];
-  late TabController _controller;
+  TabController? _controller;
+  Widget? _currentPage;
 
   ///网络数据
   List<CategoryMo> categoryList = [];
@@ -37,11 +41,12 @@ class _HomePageState extends HiState<HomePage>
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance?.addObserver(this);
     _controller = TabController(length: categoryList.length, vsync: this);
     HiNavigator.getObj().addListener(listener = (current, pre) {
       print("HomePage：${pre.page}");
       print("HomePage：${current.page}");
-      var openPage = current.page;
+      var openPage = _currentPage = current.page;
       var oldPage = pre.page;
       if (widget == openPage || openPage is HomePage) {
         print("HomePage处于onResume");
@@ -54,9 +59,29 @@ class _HomePageState extends HiState<HomePage>
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller?.dispose();
+    WidgetsBinding.instance?.removeObserver(this);
     HiNavigator.getObj().removeListener(listener);
     super.dispose();
+  }
+
+  //监听应用生命周期的变化
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    switch (state) {
+      case AppLifecycleState.inactive: //暂停
+        break;
+      case AppLifecycleState.resumed: //后台->前台
+        if (_currentPage is! VideoDetialPage) {
+          ///将状态栏修改为白色
+        }
+        break;
+      case AppLifecycleState.paused: //前台->后台
+        break;
+      case AppLifecycleState.detached: //app结束时调用
+        break;
+    }
   }
 
   @override
@@ -92,17 +117,14 @@ class _HomePageState extends HiState<HomePage>
   bool get wantKeepAlive => true;
 
   _topTabBar() {
-    return TabBar(
-      tabs: categoryList.map<Tab>((tab) {
+    return HiTopTab(
+      categoryList.map<Tab>((tab) {
         return Tab(child: Text(tab.name));
       }).toList(),
-      isScrollable: true,
-      labelColor: Colors.black,
-      indicator: const UnderlineIndicator(
-          strokeCap: StrokeCap.round,
-          insets: EdgeInsets.only(left: 15, right: 15),
-          borderSide: BorderSide(color: primary, width: 3)),
       controller: _controller,
+      fontSize: 16,
+      insets: 13,
+      unSelectedLabelColor: Colors.black54,
     );
   }
 

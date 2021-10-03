@@ -7,14 +7,14 @@ enum NavStatusStyle { LIGHT_CONTENT, DARK_CONTENT }
 class NavigatorBar extends StatelessWidget {
   final NavStatusStyle statusStyle;
   final Color oldColor;
-  final Color newColor;
+  final Color? newColor;
   final Widget child;
   final double height;
   final bool userOld;
 
   const NavigatorBar({
     Key? key,
-    this.userOld = true,
+    this.userOld = false,
     this.statusStyle = NavStatusStyle.DARK_CONTENT,
     this.oldColor = Colors.white,
     required this.child,
