@@ -44,6 +44,21 @@ dependencies:
   fluttertoast: ^8.0.8
   #tabView配置的底部指示器
   underline_indicator: ^0.0.4
+  #轮播图
+  #flutter_swiper: ^1.1.6   #非空安全的插件
+  flutter_swiper_null_safety: ^1.0.2
+  #设置沉浸式状态的样式
+  statusbarmanager: ^0.0.1
+  #行列滚动布局
+  flutter_staggered_grid_view: ^0.4.0
+  #实现Image淡进淡出的动画
+  transparent_image: ^2.0.0
+  #为图片提供内存与本地缓存
+  cached_network_image: ^3.1.0
+  #lottie动画组件
+  lottie: ^1.2.1
+  #打开外部浏览器
+  url_launcher: ^6.0.12
 
 dev_dependencies:
   flutter_test:

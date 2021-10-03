@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:flutter_code/db/hi_cache.dart';
 import 'package:flutter_code/http/core/base_request.dart';
 import 'package:flutter_code/http/core/hi_net.dart';
@@ -39,6 +41,4 @@ class LoginDao {
   static getBoardingPass() {
     return HiCache.getInstance().get(BOARDING_PASS);
   }
-
-  void sdaf() {}
 }

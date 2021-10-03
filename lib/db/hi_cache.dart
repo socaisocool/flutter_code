@@ -1,6 +1,8 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HiCache {
+  static HiCache? _instance;
+
   SharedPreferences? prefs;
 
   HiCache._() {
@@ -11,12 +13,11 @@ class HiCache {
   static Future<HiCache> preInit() async {
     if (_instance == null) {
       var prefs = await SharedPreferences.getInstance();
-      _instance = HiCache._().pre(prefs);
+      _instance = HiCache._();
+      _instance?._pre(prefs);
     }
     return _instance!;
   }
-
-  static HiCache? _instance;
 
   static HiCache getInstance() {
     _instance ??= HiCache._();
@@ -27,7 +28,8 @@ class HiCache {
     prefs ??= await SharedPreferences.getInstance();
   }
 
-  HiCache? pre(SharedPreferences prefs) {
+  ///这个版本中，这里定义的是一个方法，而不是一个命名构造函数
+  HiCache? _pre(SharedPreferences prefs) {
     this.prefs = prefs;
   }
 

@@ -1,0 +1,85 @@
+第6章内容   代码中#6
+实现如上图所示的首页模块
+熟悉页面异常状态的处理思路
+熟悉和掌握沉浸式状态栏问题的解决方案
+掌握双Feed列表的实现方案
+熟悉Flutter图片加载原理
+掌握列表在使用过程中常见问题的解决方案
+掌握下拉刷新和上拉分页的实现思路
+能够基于Lottie实现全局加载组件
+使用dart collection if灵活创建列表
+熟悉iOS 9，Android 9之后不允许铭文传输问题解决
+
+
+自己撸码遇到的问题
+1、HiCache中的_pre()在项目中识别的作为一个方法，而不是视频中是作为一个命名构造函数
+2、页面异常
+运行app时，在首页请求数据回来之前，点击排行，有可能出现以下的异常
+Unhandled Exception: setState() called after dispose(): _HomePageState#c7e7a(lifecycle state: defunct, not mounted, tickers: tracking 1 ticker)
+This error happens if you call setState() on a State object for a widget that no longer appears in the widget tree (e.g., whose parent widget no longer includes the widget in its build). This error can occur when code calls setState() from a timer or an animation callback.
+The preferred solution is to cancel the timer or stop listening to the animation in the dispose() callback. Another solution is to check the "mounted" property of this object before calling setState() to ensure the object is still in the tree.
+This error might indicate a memory leak if setState() is being called because another object is retaining a reference to this State object after it has
+ been removed from the tree. To avoid memory leaks, consider breaking the reference to this object during dispose().
+ 这个异常的大意就是：在widget的执行dispose后调用了setState函数重绘Widget时会抛出异常，这个问题统称界面状态异常，解决思路：
+3、Image.network出现 type 'Null' is not a subtype of type 'List<int>' in type cast错误
+
+
+4、ios9与Android9开始如果请求的图片地址或者接口地址是Http的化那么就会报
+Bad state:Insecure Http is not allow by platform: http://~
+
+
+5、HomePage如果没有设置SafeArea时，轮播图上边就会多处一个空白边距，无法修改
+使用ListView默认有一个上边距，可以通过外层嵌套一个MediaQuery.removePadding(removeTop:true,child)去移除
+
+也就是SafeArea+ListView 没有上边距离，ListView单独使用就有上边距
+
+6、https://github.com/fluttercandies/JsonToDart这个地址的JsonToDart插件生成的Dart Bean并没有解决空安全问题，
+这个插件可以生成非空类型的DartBean并且能够通过Dart2.5编译器的语法检查，对于不确定后台一定会下发的字段，要么生命为空类型
+要么赋值给非空类型时，可以采用??非空类型的默认值
+
+比如首页除了推荐分类是有categoryList与bannerList的其他分类都没有，因此这两个字段要么修改为空类型，或者存在null赋值给no null变量
+时要对可空数据做??操作
+
+  factory HomeMo.fromJson(Map<String, dynamic> jsonRes) {
+    final List<BannerMo>? bannerList =
+        jsonRes['bannerList'] is List ? <BannerMo>[] : null;
+    if (bannerList != null) {
+      for (final dynamic item in jsonRes['bannerList']!) {
+        if (item != null) {
+          bannerList.add(BannerMo.fromJson(asT<Map<String, dynamic>>(item)!));
+        }
+      }
+    }
+
+    final List<CategoryMo>? categoryList =
+        jsonRes['categoryList'] is List ? <CategoryMo>[] : null;
+    if (categoryList != null) {
+      for (final dynamic item in jsonRes['categoryList']!) {
+        if (item != null) {
+          categoryList
+              .add(CategoryMo.fromJson(asT<Map<String, dynamic>>(item)!));
+        }
+      }
+    }
+
+    final List<VideoMo>? videoList =
+        jsonRes['videoList'] is List ? <VideoMo>[] : null;
+    if (videoList != null) {
+      for (final dynamic item in jsonRes['videoList']!) {
+        if (item != null) {
+          videoList.add(VideoMo.fromJson(asT<Map<String, dynamic>>(item)!));
+        }
+      }
+    }
+    return HomeMo(//这句，bannerList与categoryList后台不一定下传，所以两个都有可能为null，如果直接赋值给HomeMo中的非空bannerList
+      //是会报错的，随意直接加??如果为null就用一个非空默认值去初始化
+      bannerList: bannerList ?? [],
+      categoryList: categoryList ?? [],
+      videoList: videoList!,
+    );
+    也就是DartBean每个字段都是声明为非空类型，实际解析过程，这些字段是可能为null的，如果为null，要么修改DartBean本身的可空字段的类型
+    要么初始化时传一个默认的非空值。
+
+7、视频中的flutter_statusbar_manager: ^2.0.0 是非空安全的插件，直接把源代码放进项目里，让它支持空安全
+
+
