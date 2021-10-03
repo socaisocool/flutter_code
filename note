@@ -80,7 +80,6 @@ Bad state:Insecure Http is not allow by platform: http://~
     也就是DartBean每个字段都是声明为非空类型，实际解析过程，这些字段是可能为null的，如果为null，要么修改DartBean本身的可空字段的类型
     要么初始化时传一个默认的非空值。
 
-
-
+7、视频中的flutter_statusbar_manager: ^2.0.0 是非空安全的插件，直接把源代码放进项目里，让它支持空安全
 
 

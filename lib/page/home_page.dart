@@ -63,27 +63,29 @@ class _HomePageState extends HiState<HomePage>
   Widget build(BuildContext context) {
     super.build(context); //AutomaticKeepAliveClientMixin
     return NavigatorBar(
+        userOld: false,
+        newColor: Colors.white,
         child: Scaffold(
-      body: Column(
-        children: [
-          _appBar(),
-          Container(
-            color: Colors.white,
-            child: _topTabBar(),
+          body: Column(
+            children: [
+              _appBar(),
+              Container(
+                color: Colors.white,
+                child: _topTabBar(),
+              ),
+              Flexible(
+                  child: TabBarView(
+                controller: _controller,
+                children: categoryList.map((tab) {
+                  return HomeTopTabPage(
+                    categoryName: tab.name,
+                    bannerMoData: tab.name == "推荐" ? bannerList : null,
+                  );
+                }).toList(),
+              ))
+            ],
           ),
-          Flexible(
-              child: TabBarView(
-            controller: _controller,
-            children: categoryList.map((tab) {
-              return HomeTopTabPage(
-                categoryName: tab.name,
-                bannerMoData: tab.name == "推荐" ? bannerList : null,
-              );
-            }).toList(),
-          ))
-        ],
-      ),
-    ));
+        ));
   }
 
   @override
