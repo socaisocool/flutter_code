@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_code/http/dao/login_dao.dart';
-import 'package:flutter_code/model/home_mo.dart';
 import 'package:flutter_code/page/registration_page.dart';
 import 'package:flutter_code/page/video_detial_page.dart';
 import 'package:flutter_code/test/test_json.dart';
 import 'package:flutter_code/utils/toast_util.dart';
 
 import 'db/hi_cache.dart';
+import 'http/dao/video_mo.dart';
 import 'navigator/bottom_navigator.dart';
 import 'navigator/hi_navigator.dart';
 import 'page/login_page.dart';

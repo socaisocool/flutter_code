@@ -34,3 +34,14 @@ blackLinearGradient({bool fromTop = false}) {
     end: fromTop ? Alignment.bottomCenter : Alignment.topCenter,
   );
 }
+
+//底部阴影
+BoxDecoration bottomBoxShadow() {
+  return BoxDecoration(color: Colors.white, boxShadow: [
+    BoxShadow(
+        color: Colors.grey[100]!,
+        offset: const Offset(0, 5), //xy轴的偏移
+        blurRadius: 5, //阴影模糊程度
+        spreadRadius: 1) //阴影的扩散程度
+  ]);
+}

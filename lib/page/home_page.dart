@@ -88,7 +88,6 @@ class _HomePageState extends HiState<HomePage>
   Widget build(BuildContext context) {
     super.build(context); //AutomaticKeepAliveClientMixin
     return NavigatorBar(
-        userOld: false,
         newColor: Colors.white,
         child: Scaffold(
           body: Column(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_code/model/home_mo.dart';
+import 'package:flutter_code/http/dao/video_mo.dart';
 import 'package:flutter_code/utils/view_util.dart';
 import 'package:flutter_code/widget/hi_tab.dart';
 import 'package:flutter_code/widget/navigation_bar.dart';

@@ -11,6 +11,7 @@ class NavigatorBar extends StatelessWidget {
   final Widget child;
   final double height;
   final bool userOld;
+  final BoxDecoration? decoration;
 
   const NavigatorBar({
     Key? key,
@@ -20,10 +21,15 @@ class NavigatorBar extends StatelessWidget {
     required this.child,
     this.height = 46,
     this.newColor = Colors.transparent,
+    this.decoration,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    decoration ??
+        BoxDecoration(
+          color: userOld ? oldColor : newColor,
+        );
     return userOld
         ? _supportByOldStatusBarManager(context)
         : _supportByNewStatusBarManager(context);
@@ -40,7 +46,7 @@ class NavigatorBar extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.only(top: top),
         child: child,
-        decoration: BoxDecoration(color: newColor),
+        decoration: decoration,
       ),
       translucent: true,
       statusBarColor: Colors.transparent,
@@ -57,9 +63,7 @@ class NavigatorBar extends StatelessWidget {
       height: top + height,
       child: child,
       padding: EdgeInsets.only(top: top),
-      decoration: BoxDecoration(
-        color: oldColor,
-      ),
+      decoration: decoration,
     );
   }
 
