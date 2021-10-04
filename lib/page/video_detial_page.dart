@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_code/http/dao/video_mo.dart';
+import 'package:flutter_code/http/core/hi_net_error.dart';
+import 'package:flutter_code/http/dao/video_detial_dao.dart';
+import 'package:flutter_code/model/video_detial_mo.dart';
+import 'package:flutter_code/model/video_mo.dart';
+import 'package:flutter_code/page/expand_content.dart';
+import 'package:flutter_code/utils/toast_util.dart';
 import 'package:flutter_code/utils/view_util.dart';
 import 'package:flutter_code/widget/hi_tab.dart';
 import 'package:flutter_code/widget/navigation_bar.dart';
+import 'package:flutter_code/widget/video_header.dart';
+import 'package:flutter_code/widget/video_large_card.dart';
+import 'package:flutter_code/widget/video_tool_bar.dart';
 import 'package:flutter_code/widget/video_view.dart';
 
 class VideoDetialPage extends StatefulWidget {
-  final VideoMo videoModel;
+  final VideoMo videoMo;
 
-  const VideoDetialPage({Key? key, required this.videoModel}) : super(key: key);
+  const VideoDetialPage({Key? key, required this.videoMo}) : super(key: key);
 
   @override
   _VideoDetialPageState createState() => _VideoDetialPageState();
@@ -17,6 +25,16 @@ class VideoDetialPage extends StatefulWidget {
 class _VideoDetialPageState extends State<VideoDetialPage>
     with TickerProviderStateMixin {
   TabController? _controller;
+  VideoDetialMo? _videoDetialMo;
+  VideoMo? videoMo;
+  List<VideoMo> videoList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    videoMo = widget.videoMo;
+    _loadNetData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,16 +48,29 @@ class _VideoDetialPageState extends State<VideoDetialPage>
             child: _videoView(),
           ),
           _buildTabNavigation(),
+          const Padding(padding: EdgeInsets.only(top: 8)),
+          Flexible(
+              child: Container(
+            color: Colors.white,
+            child: TabBarView(
+              controller: _controller,
+              children: [
+                _buildDetialList(),
+                Container(
+                  child: Text('敬请期待'),
+                )
+              ],
+            ),
+          ))
         ],
       ),
     );
   }
 
   _videoView() {
-    VideoMo model = widget.videoModel;
     return VideoView(
-      videoUrl: model.url,
-      cover: model.cover,
+      videoUrl: videoMo?.url ?? "",
+      cover: videoMo?.cover ?? "",
       overlayUI: videoAppBar(),
     );
   }
@@ -113,5 +144,73 @@ class _VideoDetialPageState extends State<VideoDetialPage>
       insets: 13,
       unSelectedLabelColor: Colors.black54,
     );
+  }
+
+  _buildDetialList() {
+    return ListView(
+      padding: const EdgeInsets.all(0),
+      children: [
+        ...buildContents(),
+      ],
+    );
+  }
+
+  buildContents() {
+    return [
+      Container(
+        child: VideoHeader(
+          owner: videoMo!.owner,
+        ),
+      ),
+      ExpandContent(mo: videoMo!),
+      VideoToolBar(
+          detialMo: _videoDetialMo,
+          videoMo: videoMo!,
+          onLike: _onLike,
+          onUnLike: _onUnLike,
+          onCoin: _onCoin,
+          onFavorite: _onFavorite,
+          onShare: _onShare),
+      ..._buildVideoList(),
+    ];
+  }
+
+  void _loadNetData() async {
+    try {
+      VideoDetialMo result = await VideoDetialDao.get(videoMo!.vid);
+      print("VideoDetialPage data :$result");
+      if (result != null) {
+        setState(() {
+          _videoDetialMo = result;
+          videoMo = result.videoInfo;
+          videoList = result.videoList ?? [];
+        });
+      }
+    } on NeedAuth catch (e) {
+      // ignore: avoid_print
+      print(e);
+      showWarnToast(e.message);
+    } on NeedLogin catch (e) {
+      print(e);
+      showWarnToast(e.message);
+    } on HiNetError catch (e) {
+      print(e);
+    }
+  }
+
+  void _onLike() {}
+
+  void _onUnLike() {}
+
+  void _onCoin() {}
+
+  void _onFavorite() {}
+
+  void _onShare() {}
+
+  _buildVideoList() {
+    return videoList
+        .map((videoMo) => VideoLargeCard(videoMo: videoMo))
+        .toList();
   }
 }

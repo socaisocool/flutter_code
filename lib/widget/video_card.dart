@@ -1,7 +1,7 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'package:flutter/material.dart';
-import 'package:flutter_code/http/dao/video_mo.dart';
+import 'package:flutter_code/model/video_mo.dart';
 import 'package:flutter_code/navigator/hi_navigator.dart';
 import 'package:flutter_code/utils/format_util.dart';
 import 'package:flutter_code/utils/view_util.dart';

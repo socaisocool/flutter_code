@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_code/http/dao/rank_dao.dart';
-import 'package:flutter_code/http/dao/video_mo.dart';
 import 'package:flutter_code/model/rank_mo.dart';
+import 'package:flutter_code/model/video_mo.dart';
 import 'package:flutter_code/widget/hi_base_state.dart';
-import 'package:flutter_code/widget/video_card.dart';
+import 'package:flutter_code/widget/video_large_card.dart';
 
 class RankTabPage extends StatefulWidget {
   final String sort;
@@ -20,7 +20,7 @@ class _RankTabPageState extends HiBaseTabState<RankMo, VideoMo, RankTabPage> {
           ///当item高度不足满屏高度时，也可以滑动触发下拉刷新
           physics: const AlwaysScrollableScrollPhysics(),
           itemBuilder: (context, index) {
-            return VideoCard(videoMo: dataList[index]);
+            return VideoLargeCard(videoMo: dataList[index]);
           },
           padding: const EdgeInsets.only(top: 10),
           itemCount: dataList.length,

@@ -22,37 +22,6 @@ class AboutJson {
   }
 }
 
-class Owner {
-  String? name;
-  String? face;
-  int? fans;
-
-  @override
-  String toString() {
-    return 'Owner{name: $name, face: $face, fans: $fans}';
-  }
-
-  Owner({this.name, this.face, this.fans});
-
-  Owner.fromMap(Map<String, dynamic> jsonMap) {
-    name = jsonMap['name'];
-    face = jsonMap['face'];
-    fans = jsonMap['fans'];
-  }
-
-  Owner.fromJson(String jsonStr) {
-    Owner.fromMap(jsonDecode(jsonStr));
-  }
-
-  Map<String, dynamic> toMap() {
-    return {"name": name, "face": face, "fans": face};
-  }
-
-  String toJson() {
-    return jsonEncode(toMap());
-  }
-}
-
 class NetTest {
   void register() async {
     var result = await LoginDao.registration(

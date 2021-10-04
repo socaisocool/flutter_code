@@ -14,5 +14,5 @@ String durationTransform(int seconds) {
   if (s < 10) {
     return '$m:0$s';
   }
-  return '$m$s';
+  return '$m:$s';
 }

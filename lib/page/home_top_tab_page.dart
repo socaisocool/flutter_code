@@ -3,8 +3,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_code/http/dao/home_dao.dart';
-import 'package:flutter_code/http/dao/video_mo.dart';
 import 'package:flutter_code/model/home_mo.dart';
+import 'package:flutter_code/model/video_mo.dart';
 import 'package:flutter_code/widget/hi_banner.dart';
 import 'package:flutter_code/widget/hi_base_state.dart';
 import 'package:flutter_code/widget/video_card.dart';

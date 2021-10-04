@@ -1,7 +1,8 @@
 import 'dart:convert';
 
-import 'package:flutter_code/model/home_mo.dart';
 import 'package:flutter_code/utils/convert_util.dart';
+
+import 'owner_mo.dart';
 
 class VideoMo {
   VideoMo({
@@ -29,7 +30,7 @@ class VideoMo {
         id: asT<String>(jsonRes['id'])!,
         vid: asT<String>(jsonRes['vid'])!,
         title: asT<String>(jsonRes['title'])!,
-        tname: asT<String>(jsonRes['tname'])!,
+        tname: asT<String>(jsonRes['tname']) ?? "",
         url: asT<String>(jsonRes['url'])!,
         cover: asT<String>(jsonRes['cover'])!,
         pubdate: asT<int>(jsonRes['pubdate'])!,

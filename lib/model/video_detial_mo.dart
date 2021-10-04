@@ -54,31 +54,40 @@ T? asT<T extends Object?>(dynamic value, [T? defaultValue]) {
   return defaultValue;
 }
 
-class RankMo {
-  RankMo({
-    this.total,
-    this.list,
+class VideoDetialMo {
+  VideoDetialMo({
+    this.isFavorite,
+    this.isLike,
+    this.videoInfo,
+    this.videoList,
   });
 
-  factory RankMo.fromJson(Map<String, dynamic> jsonRes) {
-    final List<VideoMo>? list = jsonRes['list'] is List ? <VideoMo>[] : null;
-    if (list != null) {
-      for (final dynamic item in jsonRes['list']!) {
+  factory VideoDetialMo.fromJson(Map<String, dynamic> jsonRes) {
+    final List<VideoMo>? videoList =
+        jsonRes['videoList'] is List ? <VideoMo>[] : null;
+    if (videoList != null) {
+      for (final dynamic item in jsonRes['videoList']!) {
         if (item != null) {
           tryCatch(() {
-            list.add(VideoMo.fromJson(asT<Map<String, dynamic>>(item)!));
+            videoList.add(VideoMo.fromJson(asT<Map<String, dynamic>>(item)!));
           });
         }
       }
     }
-    return RankMo(
-      total: asT<int?>(jsonRes['total']),
-      list: list,
+    return VideoDetialMo(
+      isFavorite: asT<bool?>(jsonRes['isFavorite']),
+      isLike: asT<bool?>(jsonRes['isLike']),
+      videoInfo: jsonRes['videoInfo'] == null
+          ? null
+          : VideoMo.fromJson(asT<Map<String, dynamic>>(jsonRes['videoInfo'])!),
+      videoList: videoList,
     );
   }
 
-  int? total;
-  List<VideoMo>? list;
+  bool? isFavorite;
+  bool? isLike;
+  VideoMo? videoInfo;
+  List<VideoMo>? videoList;
 
   @override
   String toString() {
@@ -86,7 +95,9 @@ class RankMo {
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'total': total,
-        'list': list,
+        'isFavorite': isFavorite,
+        'isLike': isLike,
+        'videoInfo': videoInfo,
+        'videoList': videoList,
       };
 }
